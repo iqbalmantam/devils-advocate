@@ -35,7 +35,7 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 st.title("🔥 Devil's Advocate: The Strategy Stress-Tester")
-st.markdown('<p class="instruction">Masukkan rencana bisnis atau ide Anda di bawah ini, dan biarkan AI membongkarnya sampai ke akar-akarkanya.</p>', unsafe_allow_html=True)
+st.markdown('<p class="instruction">Masukkan rencana bisnis atau ide Anda di bawah ini, dan biarkan AI membongkarnya sampai ke akar-akarnya.</p>', unsafe_allow_html=True)
 
 # Ambil API key dari st.secrets (pastikan diset di Streamlit Cloud Secrets)
 api_key = st.secrets.get("GEMINI_API_KEY")
@@ -94,7 +94,7 @@ if st.button("Hancurkan Ide Ini"):
                 st.write(response.text)
                 
             except Exception as e:
-                st.error(fTerjadi kesalahan saat menghubungi API Gemini: {e}")
+                st.error(f"Terjadi kesalahan saat menghubungi API Gemini: {e}")
 
 st.divider()
 st.caption("Devil's Advocate Tool - Powered by Google Gemini & Streamlit")
