@@ -7,7 +7,6 @@ st.set_page_config(page_title="Devil's Advocate", page_icon="🔥", layout="wide
 # Custom CSS untuk menyembunyikan header/logo default dan styling aplikasi
 st.markdown('''
 <style>
-    /* Menyembunyikan menu/logo GitHub default Streamlit */
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
     footer {visibility: hidden;}
@@ -88,8 +87,9 @@ if st.button("Hancurkan Ide Ini"):
                 4. Saran Perbaikan / Mitigasi
                 """
                 
+                # Menggunakan model gemini-1.5-flash yang stabil
                 response = client.models.generate_content(
-                    model='gemini-2.5-flash',
+                    model='gemini-1.5-flash',
                     contents=strategy_input,
                     config={
                         'system_instruction': system_instruction,
