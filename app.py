@@ -4,9 +4,14 @@ from google import genai
 # Konfigurasi halaman
 st.set_page_config(page_title="Devil's Advocate", page_icon="🔥", layout="wide")
 
-# Custom CSS agar tampilan bersih tanpa sidebar
+# Custom CSS untuk menyembunyikan header/logo default dan styling aplikasi
 st.markdown('''
 <style>
+    /* Menyembunyikan menu/logo GitHub default Streamlit */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    
     .main {
         background-color: #fdfbf7;
     }
@@ -31,13 +36,19 @@ st.markdown('''
         color: #555;
         margin-bottom: 30px;
     }
+    .watermark {
+        text-align: center;
+        font-size: 0.8em;
+        color: #aaa;
+        margin-top: 50px;
+    }
 </style>
 ''', unsafe_allow_html=True)
 
 st.title("🔥 Devil's Advocate: The Strategy Stress-Tester")
 st.markdown('<p class="instruction">Masukkan rencana bisnis atau ide Anda di bawah ini, dan biarkan AI membongkarnya sampai ke akar-akarnya.</p>', unsafe_allow_html=True)
 
-# Ambil API key dari st.secrets (pastikan diset di Streamlit Cloud Secrets)
+# Ambil API key dari st.secrets
 api_key = st.secrets.get("GEMINI_API_KEY")
 
 # Layout utama tanpa sidebar
@@ -65,10 +76,8 @@ if st.button("Hancurkan Ide Ini"):
     else:
         with st.spinner("Sedang membedah dan menghancurkan asumsi Anda..."):
             try:
-                # Inisialisasi klien Gemini
                 client = genai.Client(api_key=api_key)
                 
-                # Atur prompt berdasarkan tingkat kekejaman
                 system_instruction = f"""
                 Anda adalah 'Devil's Advocate' yang bertindak dengan level kekejaman: {intensity}.
                 Tugas Anda adalah melakukan analisis pre-mortem secara brutal, skeptis, dan objektif terhadap rencana atau strategi yang diberikan pengguna.
@@ -79,7 +88,6 @@ if st.button("Hancurkan Ide Ini"):
                 4. Saran Perbaikan / Mitigasi
                 """
                 
-                # Panggil model Gemini
                 response = client.models.generate_content(
                     model='gemini-2.5-flash',
                     contents=strategy_input,
@@ -96,5 +104,5 @@ if st.button("Hancurkan Ide Ini"):
             except Exception as e:
                 st.error(f"Terjadi kesalahan saat menghubungi API Gemini: {e}")
 
-st.divider()
-st.caption("Devil's Advocate Tool - Powered by Google Gemini & Streamlit")
+# Watermark
+st.markdown('<p class="watermark">Developed by iqbalmantam</p>', unsafe_allow_html=True)
