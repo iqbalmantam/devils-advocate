@@ -75,7 +75,6 @@ if st.button("Hancurkan Ide Ini"):
     else:
         with st.spinner("Sedang membedah dan menghancurkan asumsi Anda..."):
             try:
-                # Menggunakan metode yang sama seperti aplikasi peraturan perusahaan
                 genai.configure(api_key=api_key)
                 model = genai.GenerativeModel('gemini-1.5-flash')
                 
