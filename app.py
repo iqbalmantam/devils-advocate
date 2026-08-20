@@ -1,5 +1,5 @@
 import streamlit as st
-from google import genai
+import google.generativeai as genai
 
 # Konfigurasi halaman
 st.set_page_config(page_title="Devil's Advocate", page_icon="🔥", layout="wide")
@@ -75,11 +75,17 @@ if st.button("Hancurkan Ide Ini"):
     else:
         with st.spinner("Sedang membedah dan menghancurkan asumsi Anda..."):
             try:
-                client = genai.Client(api_key=api_key)
+                # Menggunakan metode yang sama seperti aplikasi peraturan perusahaan
+                genai.configure(api_key=api_key)
+                model = genai.GenerativeModel('gemini-1.5-flash')
                 
-                system_instruction = f"""
+                full_prompt = f"""
                 Anda adalah 'Devil's Advocate' yang bertindak dengan level kekejaman: {intensity}.
-                Tugas Anda adalah melakukan analisis pre-mortem secara brutal, skeptis, dan objektif terhadap rencana atau strategi yang diberikan pengguna.
+                Tugas Anda adalah melakukan analisis pre-mortem secara brutal, skeptis, dan objektif terhadap rencana atau strategi berikut.
+                
+                Rencana / Ide Pengguna:
+                {strategy_input}
+                
                 Berikan analisis dalam format bahasa Indonesia yang tajam dan terstruktur ke dalam bagian berikut:
                 1. Skenario Kegagalan Total (Worst-case scenario)
                 2. Asumsi Lemah (Flawed assumptions yang disembunyikan pembuat ide)
@@ -87,15 +93,7 @@ if st.button("Hancurkan Ide Ini"):
                 4. Saran Perbaikan / Mitigasi
                 """
                 
-                # Menggunakan model gemini-1.5-flash yang stabil
-                response = client.models.generate_content(
-                    model='gemini-1.5-flash',
-                    contents=strategy_input,
-                    config={
-                        'system_instruction': system_instruction,
-                        'temperature': 0.7,
-                    }
-                )
+                response = model.generate_content(full_prompt)
                 
                 st.divider()
                 st.subheader("Laporan Bedah Ide (Pre-Mortem)")
